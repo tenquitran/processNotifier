@@ -10,9 +10,9 @@ namespace ProcessNotifierApp
 {
     struct ProcessInfo
     {
-        std::string m_exeName;
-        std::string m_path;
         pid_t m_pid = {};
+        std::string m_path;
+        std::string m_exeName;
         // ...
     };
 

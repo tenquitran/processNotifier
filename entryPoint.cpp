@@ -17,8 +17,13 @@ int main(int argc, char* argv[])
     ProcessReader reader;
     
     // TODO: test
-    Processes p = reader.getInfo();
-    std::cout << "Process count: " << p.size() << std::endl;
+    Processes proc = reader.getInfo();
+    std::cout << "Process count: " << proc.size() << '\n' << std::endl;
+    for (const auto& itr : proc)
+    {
+        std::cout << itr.second.m_pid << ": " << itr.second.m_path << '\n';
+    }
+    std::cout << std::endl;
     return 0;
 
     // Initialize the process list that will be analyzed.

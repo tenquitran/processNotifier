@@ -5,6 +5,9 @@
 #include "ProcessReader.h"
 #include "ProcessAnalyzer.h"
 
+// TODO: temp
+#include "ProcessState.h"
+
 ////////////////////////////////////////////////////////////
 
 using namespace ProcessNotifierApp;
@@ -13,7 +16,7 @@ using namespace ProcessNotifierApp;
 
 
 int main(int argc, char* argv[])
-{
+{  
     ProcessReader reader;
     
     // TODO: test
@@ -21,7 +24,8 @@ int main(int argc, char* argv[])
     std::cout << "Process count: " << proc.size() << '\n' << std::endl;
     for (const auto& itr : proc)
     {
-        std::cout << itr.second.m_pid << ": " << itr.second.m_path << '\n';
+        std::cout << itr.second.m_pid << ": " << itr.second.m_path 
+                  << " (" << ProcessStateConverter::stateToString(itr.second.m_state) << ")" << '\n';
     }
     std::cout << std::endl;
     return 0;

@@ -9,6 +9,7 @@
 #include <string.h>
 #include <fcntl.h>
 #include "ProcessReader.h"
+#include "ProcessState.h"
 
 ////////////////////////////////////////////////////////////
 
@@ -78,30 +79,22 @@ Processes ProcessReader::getInfo() const
         
         sprintf(path, "/proc/%d/stat", pid);
         
-        //std::cout << "Path (2):\n" << path << std::endl;
-        
         FILE* procStat = fopen(path, "r");
-#if 1
+
         if (!procStat)
         {
             perror("fopen(/proc/<PID>/stat)");
         }
         else
         {
-            //std::cout << "OK(2)" << std::endl;
-            
             readProcessStatus(procStat, proc);
             
             if (0 != fclose(procStat))
                 {perror("fclose");}
         }
-#endif
 
         processes.emplace(pid, proc);
     }
-    
-    // TODO: implement
-    //assert(false);
     
     if (-1 == closedir(proc))
 	{
@@ -116,6 +109,7 @@ void ProcessReader::readProcessStatus(FILE* fd, ProcessInfo& procInfo) const
     // Process ID.
     
     pid_t pid = {};
+    
     fscanf(fd, "%d", &pid);
     
     if (pid != procInfo.m_pid)
@@ -139,6 +133,11 @@ void ProcessReader::readProcessStatus(FILE* fd, ProcessInfo& procInfo) const
         procInfo.m_exeName.erase(procInfo.m_exeName.length() - 1, 1);
     }
     
+    // Process state.
+
+    char state[2];
     
-    // TODO: other data
+    fscanf(fd, "%s", state);
+    
+    procInfo.m_state = ProcessStateConverter::charToState(state[0]);
 }

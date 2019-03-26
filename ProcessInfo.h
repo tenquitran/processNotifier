@@ -4,6 +4,7 @@
 #include <unistd.h>
 #include <string>
 #include <map>
+#include "ProcessState.h"
 
 
 namespace ProcessNotifierApp
@@ -11,9 +12,12 @@ namespace ProcessNotifierApp
     struct ProcessInfo
     {
         pid_t m_pid = {};
+        
         std::string m_path;
+        
         std::string m_exeName;
-        // ...
+        
+        EProcessState m_state = {EProcessState::Undefined};
     };
 
 

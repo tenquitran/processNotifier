@@ -1,3 +1,4 @@
 # Build
 *.o
 *.exe
+*.exe.stackdump

@@ -5,7 +5,7 @@ Created: March 25, 2019
 
 Usage example:
 
-```console
+```shell
 # sleep 10&
 # ./procNot
 ```

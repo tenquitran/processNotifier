@@ -57,19 +57,8 @@ namespace ProcessNotifierApp
     };
 
 
-#if 1
     // Process data collection.
     typedef std::set<ProcessInfo> Processes;
-#else
-    // Data about processes.
-    // Key: path to the process executable.
-    typedef std::multimap<std::string, ProcessInfo> Processes;
-    
-    typedef std::multimap<std::string, ProcessInfo>::const_iterator ProcItr;
-    
-    typedef std::pair< std::multimap<std::string, ProcessInfo>::const_iterator, 
-                       std::multimap<std::string, ProcessInfo>::const_iterator > ProcItrPair;
-#endif
 }
 
 #endif

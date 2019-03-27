@@ -1,8 +1,4 @@
 #include <cassert>
-
-// TODO: temp
-#include <iostream>
-
 #include "ProcessState.h"
 
 ////////////////////////////////////////////////////////////
@@ -41,8 +37,6 @@ EProcessState ProcessStateConverter::charToState(char c)
     case ' ':
         return EProcessState::Unknown;
     default:
-        std::cout << "State val: " << c << std::endl;
-        //assert(false); 
         return EProcessState::Undefined;
     }
 }
@@ -76,7 +70,7 @@ std::string ProcessStateConverter::stateToString(EProcessState state)
     case EProcessState::Unknown:
         return "unknown";
     default:
-        //assert(false); 
+        //assert(false);
         return "undefined";
     }
 }

@@ -1,5 +1,5 @@
 #include <cassert>
-#include <iostream>    // TODO: temp
+#include <iostream>
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <dirent.h>
@@ -93,7 +93,7 @@ Processes ProcessReader::getInfo() const
                 {perror("fclose");}
         }
 
-        processes.emplace(pid, proc);
+        processes.emplace(proc);
     }
     
     if (-1 == closedir(proc))

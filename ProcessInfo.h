@@ -3,7 +3,7 @@
 
 #include <unistd.h>
 #include <string>
-#include <map>
+#include <set>
 #include "ProcessState.h"
 
 
@@ -11,6 +11,42 @@ namespace ProcessNotifierApp
 {
     struct ProcessInfo
     {
+    public:
+        ProcessInfo() = default;
+    
+        bool operator<(const ProcessInfo& other) const
+        {
+            if (m_path < other.m_path)
+            {
+                return true;
+            }
+            else if (m_path > other.m_path)
+            {
+                return false;
+            }
+            
+            return (m_pid < other.m_pid);
+        }
+        
+        bool operator ==(const ProcessInfo& other) const
+        {
+            return (   m_path == other.m_path
+                    && m_pid  == other.m_pid);
+        }
+        
+        bool operator!=(const ProcessInfo& other) const
+        {
+            return !(this->operator==(other));
+        }
+        
+        // Display process information.
+        void display() const
+        {
+            std::cout << m_pid << ": " << m_path 
+                      << " (" << ProcessStateConverter::stateToString(m_state) << ")" << std::endl;
+        }
+
+    public:
         pid_t m_pid = {};
         
         std::string m_path;
@@ -21,9 +57,19 @@ namespace ProcessNotifierApp
     };
 
 
+#if 1
+    // Process data collection.
+    typedef std::set<ProcessInfo> Processes;
+#else
     // Data about processes.
-    // Key: process ID.
-    typedef std::map<pid_t, ProcessInfo> Processes;
+    // Key: path to the process executable.
+    typedef std::multimap<std::string, ProcessInfo> Processes;
+    
+    typedef std::multimap<std::string, ProcessInfo>::const_iterator ProcItr;
+    
+    typedef std::pair< std::multimap<std::string, ProcessInfo>::const_iterator, 
+                       std::multimap<std::string, ProcessInfo>::const_iterator > ProcItrPair;
+#endif
 }
 
 #endif

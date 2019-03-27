@@ -11,10 +11,12 @@ namespace ProcessNotifierApp
     public:
         explicit ProcessAnalyzer(const Processes& procInfo);
     
-        void checkAndDisplay(const Processes& procInfo);
+        // Check for differences in the process collection and display these differences, if any.
+        // Parameters: newInfo - new process collection.
+        void checkAndDisplay(const Processes& newInfo);
     
     private:
-        // Current process list.
+        // Current process collection.
         ProcessNotifierApp::Processes m_current;
     };
 }

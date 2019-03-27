@@ -5,9 +5,6 @@
 #include "ProcessReader.h"
 #include "ProcessAnalyzer.h"
 
-// TODO: temp
-#include "ProcessState.h"
-
 ////////////////////////////////////////////////////////////
 
 using namespace ProcessNotifierApp;
@@ -17,24 +14,46 @@ using namespace ProcessNotifierApp;
 
 int main(int argc, char* argv[])
 {  
+#if 0
     ProcessReader reader;
     
     // TODO: test
+    
     Processes proc = reader.getInfo();
+#if 0
     std::cout << "Process count: " << proc.size() << '\n' << std::endl;
     for (const auto& itr : proc)
     {
-        std::cout << itr.second.m_pid << ": " << itr.second.m_path 
-                  << " (" << ProcessStateConverter::stateToString(itr.second.m_state) << ")" << '\n';
+        std::cout << itr.m_pid << ": " << itr.m_path 
+                  << " (" << ProcessStateConverter::stateToString(itr.m_state) << ")" << '\n';
     }
     std::cout << std::endl;
+#endif
+    
+    ProcessAnalyzer analyzer(proc);
+    
+    timespec requested = {};
+    requested.tv_sec  = 20;
+    requested.tv_nsec = 0;
+    
+    timespec remaining = {};
+    
+    nanosleep(&requested, &remaining);
+    
+    analyzer.checkAndDisplay(reader.getInfo());
+    
     return 0;
+#endif
 
-    // Initialize the process list that will be analyzed.
+
+#if 1
+    ProcessReader reader;
+
+    // Initialize the process list to compare to.
     ProcessAnalyzer analyzer(reader.getInfo());
     
     timespec requested = {};
-    requested.tv_nsec = 100000000;    // 100 ms
+    requested.tv_nsec = 500000000;    // 500 ms
     
     timespec remaining = {};
 
@@ -59,4 +78,5 @@ int main(int argc, char* argv[])
     }
     
     return 0;
+#endif
 }

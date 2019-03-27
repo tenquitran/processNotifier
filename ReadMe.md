@@ -6,8 +6,8 @@ Created: March 25, 2019
 Usage example:
 
 ```shell
-# sleep 10&
-# ./procNot
+$ sleep 10&
+$ ./procNot
 ```
 
 Output:

@@ -1,5 +1,5 @@
 processNotifier (the executable named `procNot` to type less) - Linux console program notifying about creation and termination of processes.
-Polls the `proc` pseudo-filesystem. Stopped by `^C`.
+Polls the `proc` pseudo-filesystem. Stopped by the `kill` command.
 
 Created: March 25, 2019
 

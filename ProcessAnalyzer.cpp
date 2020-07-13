@@ -3,6 +3,7 @@
 #include <set>
 #include <vector>
 #include <algorithm>
+#include <strings.h>
 #include "ProcessAnalyzer.h"
 
 ////////////////////////////////////////////////////////////
@@ -12,8 +13,8 @@ using namespace ProcessNotifierApp;
 ////////////////////////////////////////////////////////////
 
 
-ProcessAnalyzer::ProcessAnalyzer(const Processes& procInfo)
-    : m_current(procInfo)
+ProcessAnalyzer::ProcessAnalyzer(const Processes& procInfo, const std::string& processToWait /* = "" */)
+    : m_current(procInfo), m_processToWait(processToWait)
 {
     if (m_current.empty())
     {
@@ -42,16 +43,29 @@ void ProcessAnalyzer::checkAndDisplay(const Processes& newInfo)
     
     // Display the terminated processes info.
     
-    if (!terminated.empty())
+    if (!m_processToWait.empty())    // only for the specified process
     {
-        std::cout << "Terminated processes:\n---------------------\n";
+        for (const auto& itr : terminated)
+        {
+            if (0 == strcasecmp(m_processToWait.c_str(), itr.m_exeName.c_str()))
+            {
+                std::cout << "Process \"" << itr.m_exeName << "\" terminated\n";
+            }
+        }
     }
-    
-    for (const auto& itr : terminated)
+    else    // for all processes
     {
-        itr.display();
+        if (!terminated.empty())
+        {
+            std::cout << "Terminated processes:\n---------------------\n";
+        }
+        
+        for (const auto& itr : terminated)
+        {
+            itr.display();
+        }
     }
-    
+
     // Step 2. Find new processes.
     
     std::vector<ProcessInfo> created(maxDiffSize);
@@ -59,17 +73,33 @@ void ProcessAnalyzer::checkAndDisplay(const Processes& newInfo)
     itd = std::set_difference(newInfo.begin(), newInfo.end(), m_current.begin(), m_current.end(), created.begin());
     
     created.resize(itd - created.begin());
-    
-    if (!created.empty())
-    {
-        std::cout << "Created processes:\n------------------\n";
-    }
-    
+
     // Display the new processes info.
-    for (const auto& itr : created)
+    
+    if (!m_processToWait.empty())    // only for the specified process
     {
-        itr.display();
+        for (const auto& itr : created)
+        {
+            if (0 == strcasecmp(m_processToWait.c_str(), itr.m_exeName.c_str()))
+            {
+                std::cout << "Process \"" << itr.m_exeName << "\" created\n";
+            }
+        }
     }
+    else    // for all processes
+    {
+        if (!created.empty())
+        {
+            std::cout << "Created processes:\n------------------\n";
+        }
+        
+        for (const auto& itr : created)
+        {
+            itr.display();
+        }
+    }
+
+    //std::cout << std::endl;
 
     // Step 3. Replace the current collection of processes.
     m_current = newInfo;

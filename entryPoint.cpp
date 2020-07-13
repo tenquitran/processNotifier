@@ -11,13 +11,25 @@ using namespace ProcessNotifierApp;
 
 ////////////////////////////////////////////////////////////
 
-
 int main(int argc, char* argv[])
-{  
+{
+    // Optional name of the process for whose enter and exit we'll wait.
+    std::string processToWait;
+    
+    if (1 != argc && 2 != argc)
+    {
+        std::cout << "Usage:\n$ procNot [process_name]" << std::endl;
+        return 1;
+    }
+    else if (2 == argc)
+    {
+        processToWait = argv[1];
+    }
+
     ProcessReader reader;
 
     // Initialize the process list to compare to.
-    ProcessAnalyzer analyzer(reader.getInfo());
+    ProcessAnalyzer analyzer(reader.getInfo(), processToWait);
     
     timespec requested = {};
     requested.tv_nsec = 200000000;    // 200 ms
@@ -39,7 +51,7 @@ int main(int argc, char* argv[])
             else
             {
                 perror("nanosleep");
-                return 1;
+                return 2;
             }
         }
     }
